@@ -35,3 +35,14 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:security
+
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: 890048955313625
+            client-secret: 3fc1c66a4c6c0b9a73ff0f9ceaa98fb2
+            scope:
+              - email
+              - public_profile

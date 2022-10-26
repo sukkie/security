@@ -1,17 +1,24 @@
 package com.cos.security.controller;
 
+import com.cos.security.config.auth.PrincipalDetails;
 import com.cos.security.model.UserModel;
 import com.cos.security.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@Slf4j
 public class IndexController {
 
     @Autowired
@@ -19,6 +26,16 @@ public class IndexController {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @GetMapping("/test/login")
+    public @ResponseBody String testLogin(
+            Authentication authentication,
+            @AuthenticationPrincipal PrincipalDetails userDetails) { // DI(의존성 주입)
+        log.info("authentication : " + authentication.getPrincipal());
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        log.info("User : " + userDetails.getUserModel());
+        return "세션정보확인";
+    }
 
     @GetMapping({"", "/"})
     public String index() {
@@ -28,7 +45,8 @@ public class IndexController {
     }
 
     @GetMapping("/user")
-    public @ResponseBody String user() {
+    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        log.info("principalDetails : " + principalDetails);
         return "user";
     }
 
