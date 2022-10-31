@@ -50,12 +50,12 @@ spring:
           naver:
             client-id: spWMAdpyxs3jLhOxf8Sm
             client-secret: 8W5cGC6_DF
-          scope:
-            - name
-            - email
-          client-name: Naver
-          authorization-grant-type: authorization_code
-          redirect-uri: http://localhost8080/login/oauth2/code/naver
+            scope:
+              - name
+              - email
+            client-name: naver
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver
 
         provider:
           naver:

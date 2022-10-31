@@ -3,6 +3,7 @@ package com.cos.security.config.oauth;
 import com.cos.security.config.auth.PrincipalDetails;
 import com.cos.security.config.oauth.provider.FacebookUserInfo;
 import com.cos.security.config.oauth.provider.GoogleUserInfo;
+import com.cos.security.config.oauth.provider.NaverUserInfo;
 import com.cos.security.config.oauth.provider.OAuth2UserInfo;
 import com.cos.security.model.UserModel;
 import com.cos.security.repository.UserRepository;
@@ -43,8 +44,10 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             oAuth2UserInfo = new GoogleUserInfo(oauth2User.getAttributes());
         } else if (userRequest.getClientRegistration().getRegistrationId().equals("facebook")) {
             oAuth2UserInfo = new FacebookUserInfo(oauth2User.getAttributes());
+        } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
+            oAuth2UserInfo = new NaverUserInfo(oauth2User.getAttribute("response"));
         } else {
-            log.error("only support facebook or google");
+            log.error("only support facebook or google or naver");
         }
 
         String provider = oAuth2UserInfo.getProvider();
