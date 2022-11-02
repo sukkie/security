@@ -35,6 +35,18 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:security
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 2
+    #    username: ncjdev
+    password: foobared
+    timeout: 1000
+    lettuce:
+      pool:
+        enabled: true
+        max-active: 16
+        min-idle: 4
 
   security:
     oauth2:

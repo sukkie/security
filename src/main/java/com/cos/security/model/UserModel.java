@@ -1,5 +1,6 @@
 package com.cos.security.model;
 
+import java.io.Serializable;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.sql.Timestamp;
 @Entity
 @Data
 @NoArgsConstructor
-public class UserModel {
+public class UserModel implements Serializable {
 
     @Id //pk
     @GeneratedValue(strategy = GenerationType.IDENTITY) //프로젝트에 연결된 디비의 넘버링 전략을 사용

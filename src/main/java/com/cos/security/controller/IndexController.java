@@ -3,6 +3,9 @@ package com.cos.security.controller;
 import com.cos.security.config.auth.PrincipalDetails;
 import com.cos.security.model.UserModel;
 import com.cos.security.repository.UserRepository;
+import java.util.Collections;
+import java.util.Spliterator;
+import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -30,10 +33,15 @@ public class IndexController {
     @GetMapping("/test/login")
     public @ResponseBody String testLogin(
             Authentication authentication,
-            @AuthenticationPrincipal PrincipalDetails userDetails) { // DI(의존성 주입)
-        log.info("authentication : " + authentication.getPrincipal());
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        log.info("User : " + userDetails.getUserModel());
+            @AuthenticationPrincipal PrincipalDetails userDetails,
+            HttpSession session) { // DI(의존성 주입)
+        if (authentication != null) {
+            log.info("authentication : " + authentication.getPrincipal());
+            PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+            log.info("User : " + userDetails.getUserModel());
+            log.info("SPRING_SECURITY_CONTEXT : " + session.getAttribute("SPRING_SECURITY_CONTEXT"));
+//            session.setAttribute("SPRING_SECURITY_CONTEXT", session.getAttribute("SPRING_SECURITY_CONTEXT"));
+        }
         return "세션정보확인";
     }
 
@@ -47,7 +55,7 @@ public class IndexController {
     @GetMapping("/user")
     public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         log.info("principalDetails : " + principalDetails);
-        return "user";
+        return principalDetails.toString();
     }
 
     @GetMapping("/admin")
@@ -73,6 +81,7 @@ public class IndexController {
 
     @PostMapping("/join")
     public String join(UserModel userModel) {
+        log.info(userModel.toString());
         userModel.setRole("ROLE_USER");
         String rawPassword = userModel.getPassword();
         String encPassrod = bCryptPasswordEncoder.encode(rawPassword);
